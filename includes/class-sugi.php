@@ -159,6 +159,8 @@ class Sugi {
 
 		$this->loader->add_action('admin_menu', $plugin_admin, 'register_sugi_menu');
 
+		$this->loader->add_action('wp_ajax_get_data',  $plugin_admin, 'get_data');
+
 	}
 
 	/**

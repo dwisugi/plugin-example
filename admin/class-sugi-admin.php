@@ -104,9 +104,34 @@ class Sugi_Admin {
 		add_menu_page( 'title_ajax', 'menu_ajax', 'manage_options', 'tes_ajax', [$this, 'funct_ajax'], 'dashicons-admin-multisite', 2 );
 	}
 
-	public function funct_ajax()
-	{	
+	public function funct_ajax(){	
 		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/test_ajax.php';
+	}
+
+	public function get_data(){
+		global $wpdb;
+		$ret = array(
+			'status' => 'success',
+			'message' => 'Berhasil mendapatkan data indikator kegiatan renja',
+			'data' => array()
+		);
+
+		if(!empty($_POST)){
+			$data = $wpdb->get_results($wpdb->prepare('
+				SELECT 
+					*
+				FROM data_petugas
+			'),ARRAY_A);
+			$ret['data'] = array();
+			if(!empty($data)){
+				$ret['data'] = $data;
+			}
+		}else{
+			$ret['status']	= 'error';
+			$ret['message']	= 'Format Salah!';
+		}
+
+		die(json_encode($ret));
 	}
 
 }
